@@ -1,0 +1,439 @@
+{
+   "resourceId":"process_1771855350007",
+   "stencil":{
+      "id":"BPMNDiagram"
+   },
+   "properties":{
+      "processId":"process_1771855350007",
+      "name":"test template gateway 7"
+   },
+   "childShapes":[
+      {
+         "resourceId":"start_1",
+         "stencil":{
+            "id":"StartNoneEvent"
+         },
+         "properties":{
+            "overrideId":"start_1",
+            "name":"Start process",
+            "processId":"start_1",
+            "prototypeId": "start_1",
+            "nodeType": "StartNoneEvent"
+         },
+         "bounds":{
+            "lowerRight":{
+               "x":0,
+               "y":0
+            },
+            "upperLeft":{
+               "x":0,
+               "y":0
+            }
+         },
+         "outgoing":[
+            {
+               "resourceId":"line_out_start_1_0"
+            }
+         ]
+      },
+      {
+         "resourceId":"initial_task",
+         "stencil":{
+            "id":"UserTask"
+         },
+         "properties":{
+            "prototypeId": "initial_task",
+            "nodeType": "UserTask",
+            "overrideId":"initial_task",
+            "name":"task usuário",
+            "processId":"initial_task",
+            "documentation":"tesk basic",
+            "userTaskAssignment":{
+               "assignment":{
+                  "assignee":"alex.query@gmail.com",
+                  "type":"idm",
+                  "candidateGroups":[
+                     "opsteam",
+                     "redteam"
+                  ],
+                  "candidateUsers":[
+                     "aff@gamail.com."
+                  ]
+               }
+            }
+         },
+         "bounds":{
+            "lowerRight":{
+               "x":0,
+               "y":0
+            },
+            "upperLeft":{
+               "x":0,
+               "y":0
+            }
+         },
+         "outgoing":[
+            {
+               "resourceId":"line_out_initial_task_0"
+            }
+         ]
+      },
+      {
+         "resourceId":"service_task_1",
+         "stencil":{
+            "id":"ServiceTask"
+         },
+         "properties":{
+            "prototypeId": "service_task_1",
+            "nodeType": "ServiceTask",
+            "overrideId":"service_task_1",
+            "name":"pesquisa api",
+            "processId":"service_task_1",
+            "documentation":"pesquisa basica",
+            "serviceTaskConfig":{
+               "operation":"html",
+               "uri":"https://pocketbase.io/api/collections/posts/records/${itemId}",
+               "method":"GET",
+               "responseVariableName": "resposta",
+               "saveResponseVariableAsJson":true
+            }
+         },
+         "bounds":{
+            "lowerRight":{
+               "x":0,
+               "y":0
+            },
+            "upperLeft":{
+               "x":0,
+               "y":0
+            }
+         },
+         "outgoing":[
+            {
+               "resourceId":"entrada_fluxo_decisao_1"
+            }
+         ]
+      },
+      {
+         "resourceId":"id_gateway_1",
+         "stencil":{
+            "id":"ExclusiveGateway"
+         },
+         "properties":{
+            "prototypeId": "id_gateway_1",
+            "nodeType": "ExclusiveGateway",
+            "overrideId":"id_gateway_1",
+            "name":"fluxo_decisao",
+            "processId":"id_gateway_1",
+            "documentation":""
+         },
+         "bounds":{
+            "lowerRight":{
+               "x":0,
+               "y":0
+            },
+            "upperLeft":{
+               "x":0,
+               "y":0
+            }
+         },
+         "outgoing":[
+            {
+               "resourceId":"decisao_1"
+            },
+            {
+               "resourceId":"decisao_2"
+            }
+         ]
+      },
+      {
+         "resourceId":"id_email_success",
+         "stencil":{
+            "id":"SendTask"
+         },
+         "properties":{
+            "prototypeId": "id_email_success",
+            "nodeType": "SendTask",
+            "overrideId":"id_email_success",
+            "name":"envio de email",
+            "processId":"id_email_success",
+            "sendTaskConfig":{
+               "operation":"mail",
+               "target":"alexandre.araujo@mv.com.br",
+               "subject":"sucesso na pesquisa",
+               "text":"Servico realizado com sucesso com texto ${resposta.title}"
+            }
+         },
+         "bounds":{
+            "lowerRight":{
+               "x":0,
+               "y":0
+            },
+            "upperLeft":{
+               "x":0,
+               "y":0
+            }
+         },
+         "outgoing":[
+            {
+               "resourceId":"out_id_email_success_end_success_0"
+            }
+         ]
+      },
+      {
+         "resourceId":"id_email_fail",
+         "stencil":{
+            "id":"SendTask"
+         },
+         "properties":{
+            "prototypeId": "id_email_fail",
+            "nodeType": "SendTask",
+            "overrideId":"id_email_fail",
+            "name":"envio de email fail",
+            "processId":"id_email_fail",
+            "sendTaskConfig":{
+               "operation":"mail",
+               "target":"alexandre.araujo@mv.com.br",
+               "subject":"falha de pesquisa",
+               "text":"Falha no serviço ${resposta.title}"
+            }
+         },
+         "bounds":{
+            "lowerRight":{
+               "x":0,
+               "y":0
+            },
+            "upperLeft":{
+               "x":0,
+               "y":0
+            }
+         },
+         "outgoing":[
+            {
+               "resourceId":"out_line_email_fail_end"
+            }
+         ]
+      },
+      {
+         "resourceId":"end_success",
+         "stencil":{
+            "id":"EndNoneEvent"
+         },
+         "properties":{
+            "prototypeId": "end_success",
+            "nodeType": "EndNoneEvent",
+            "overrideId":"end_success",
+            "name":"End process",
+            "processId":"end_success"
+         },
+         "bounds":{
+            "lowerRight":{
+               "x":0,
+               "y":0
+            },
+            "upperLeft":{
+               "x":0,
+               "y":0
+            }
+         },
+         "outgoing":[
+            
+         ]
+      },
+      {
+         "resourceId":"decisao_1",
+         "stencil":{
+            "id":"SequenceFlow"
+         },
+         "properties":{
+            "prototypeId": "decisao_1",
+            "nodeType": "SequenceFlow",
+            "overrideId":"decisao_1",
+            "conditionExpression": "${resposta != null && resposta.title == 'Lorem ipsum'}"
+         },
+         "dockers":[
+            {
+               "x":50,
+               "y":50
+            },
+            {
+               "x":50,
+               "y":50
+            }
+         ],
+         "outgoing":[
+            {
+               "resourceId":"id_email_success"
+            }
+         ]
+      },
+      {
+         "resourceId":"decisao_2",
+         "stencil":{
+            "id":"SequenceFlow"
+         },
+         "properties":{
+            "name": "not equal",
+            "prototypeId": "decisao_2",
+            "nodeType": "SequenceFlow",
+            "overrideId":"decisao_2",
+            "conditionExpression": "${resposta != null && resposta.title != 'Lorem ipsum'}"
+         },
+         "dockers":[
+            {
+               "x":50,
+               "y":50
+            },
+            {
+               "x":50,
+               "y":50
+            }
+         ],
+         "outgoing":[
+            {
+               "resourceId":"id_email_fail"
+            }
+         ]
+      },
+      {
+         "resourceId":"line_out_start_1_0",
+         "stencil":{
+            "id":"SequenceFlow"
+         },
+         "properties":{
+            "prototypeId": "line_out_start_1_0",
+            "nodeType": "SequenceFlow",
+            "overrideId":"line_out_start_1_0"
+         },
+         "dockers":[
+            {
+               "x":50,
+               "y":50
+            },
+            {
+               "x":50,
+               "y":50
+            }
+         ],
+         "outgoing":[
+            {
+               "resourceId":"initial_task"
+            }
+         ]
+      },
+      {
+         "resourceId":"line_out_initial_task_0",
+         "stencil":{
+            "id":"SequenceFlow"
+         },
+         "properties":{
+            "prototypeId": "line_out_initial_task_0",
+            "nodeType": "SequenceFlow",
+            "overrideId":"line_out_initial_task_0"
+         },
+         "dockers":[
+            {
+               "x":50,
+               "y":50
+            },
+            {
+               "x":50,
+               "y":50
+            }
+         ],
+         "outgoing":[
+            {
+               "resourceId":"service_task_1"
+            }
+         ]
+      },
+      {
+         "resourceId":"out_id_email_success_end_success_0",
+         "stencil":{
+            "id":"SequenceFlow"
+         },
+         "properties":{
+            "prototypeId": "out_id_email_success_end_success_0",
+            "nodeType": "SequenceFlow",
+            "overrideId":"out_id_email_success_end_success_0"
+         },
+         "dockers":[
+            {
+               "x":50,
+               "y":50
+            },
+            {
+               "x":50,
+               "y":50
+            }
+         ],
+         "outgoing":[
+            {
+               "resourceId":"end_success"
+            }
+         ]
+      },
+      {
+         "resourceId":"out_line_email_fail_end",
+         "stencil":{
+            "id":"SequenceFlow"
+         },
+         "properties":{
+            "prototypeId": "out_line_email_fail_end",
+            "nodeType": "SequenceFlow",
+            "overrideId":"out_line_email_fail_end"
+         },
+         "dockers":[
+            {
+               "x":50,
+               "y":50
+            },
+            {
+               "x":50,
+               "y":50
+            }
+         ],
+         "outgoing":[
+            {
+               "resourceId":"initial_task"
+            }
+         ]
+      },
+      {
+         "resourceId":"entrada_fluxo_decisao_1",
+         "stencil":{
+            "id":"SequenceFlow"
+         },
+         "properties":{
+            "prototypeId": "entrada_fluxo_decisao_1",
+            "nodeType": "SequenceFlow",
+            "overrideId":"entrada_fluxo_decisao_1"
+         },
+         "dockers":[
+            {
+               "x":50,
+               "y":50
+            },
+            {
+               "x":50,
+               "y":50
+            }
+         ],
+         "outgoing":[
+            {
+               "resourceId":"id_gateway_1"
+            }
+         ]
+      }
+   ],
+   "bounds":{
+      "lowerRight":{
+         "x":1200,
+         "y":1200
+      },
+      "upperLeft":{
+         "x":0,
+         "y":0
+      }
+   }
+}

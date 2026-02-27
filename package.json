@@ -1,0 +1,19 @@
+{
+  "name": "flowable-converter",
+  "version": "1.0.0",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "tsc && node dist/server.js",
+    "dev": "ts-node src/server.ts"
+  },
+  "dependencies": {
+    "@supdigest/digest-convert-types": "1.2.4",
+    "fast-xml-parser": "^5.3.7",
+    "fastify": "^5.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

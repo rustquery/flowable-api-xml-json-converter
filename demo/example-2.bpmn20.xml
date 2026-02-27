@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+	xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" targetNamespace="http://flowable.org/bpmn"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:flowable="http://flowable.org/bpmn">
+	<process id="process_1771855354920" name="rest test template" isExecutable="true">
+		<startEvent id="start_1" name="Start process"/>
+		<userTask id="id_a7173da4_7f11_465b_b5cb_479bfd5834d9" name="task usuário" flowable:assignee="alex.query@gmail.com" flowable:candidateGroups="opsteam,redteam" flowable:candidateUsers="aff@gamail.com.">
+			<documentation>tesk basic</documentation>
+		</userTask>
+		<serviceTask id="id_41fde8e9_eaa7_4722_a40b_2a17e8d82bb0" name="pesquisa basica" flowable:type="http">
+			<documentation>pesquisa basica</documentation>
+			<extensionElements>
+				<flowable:field name="requestMethod">
+					<flowable:string>GET</flowable:string>
+				</flowable:field>
+				<flowable:field name="requestUrl">
+					<flowable:string><![CDATA[https://pocketbase.io/api/collections/posts/records?page=1&perPage=20]]></flowable:string>
+				</flowable:field>
+				<flowable:field name="requestHeaders">
+					<flowable:string><![CDATA[Accept: application/json
+Content-Type: application/json]]></flowable:string>
+				</flowable:field>
+				<flowable:field name="saveResponseParameters">
+					<flowable:string>true</flowable:string>
+				</flowable:field>
+				<flowable:field name="responseVariableName">
+					<flowable:string>restResultData</flowable:string>
+				</flowable:field>
+			</extensionElements>
+		</serviceTask>
+		<sendTask id="id_64046406_759e_43a4_a667_a374e3d96a3a" name="envio de email" flowable:type="mail" flowable:async="true">
+			<extensionElements>
+				<flowable:field name="to">
+					<flowable:string>alexandre.araujo@mv.com.br</flowable:string>
+				</flowable:field>
+				<flowable:field name="subject">
+					<flowable:string>assunto qualquer</flowable:string>
+				</flowable:field>
+				<flowable:field name="text">
+					<flowable:string>teste de email qualquer</flowable:string>
+				</flowable:field>
+			</extensionElements>
+		</sendTask>
+		<sequenceFlow id="in_id_a7173da4_7f11_465b_b5cb_479bfd5834d9_start_1_0" sourceRef="start_1" targetRef="id_a7173da4_7f11_465b_b5cb_479bfd5834d9"/>
+		<sequenceFlow id="out_id_a7173da4_7f11_465b_b5cb_479bfd5834d9_end_success_0" sourceRef="id_a7173da4_7f11_465b_b5cb_479bfd5834d9" targetRef="end_success"/>
+		<sequenceFlow id="in_id_41fde8e9_eaa7_4722_a40b_2a17e8d82bb0_id_a7173da4_7f11_465b_b5cb_479bfd5834d9_0" sourceRef="id_a7173da4_7f11_465b_b5cb_479bfd5834d9" targetRef="id_41fde8e9_eaa7_4722_a40b_2a17e8d82bb0"/>
+		<sequenceFlow id="out_id_41fde8e9_eaa7_4722_a40b_2a17e8d82bb0_end_success_0" sourceRef="id_41fde8e9_eaa7_4722_a40b_2a17e8d82bb0" targetRef="end_success"/>
+		<sequenceFlow id="in_id_64046406_759e_43a4_a667_a374e3d96a3a_id_41fde8e9_eaa7_4722_a40b_2a17e8d82bb0_0" sourceRef="id_41fde8e9_eaa7_4722_a40b_2a17e8d82bb0" targetRef="id_64046406_759e_43a4_a667_a374e3d96a3a"/>
+		<sequenceFlow id="out_id_64046406_759e_43a4_a667_a374e3d96a3a_end_success_0" sourceRef="id_64046406_759e_43a4_a667_a374e3d96a3a" targetRef="end_success"/>
+		<endEvent id="end_success" name="End process"/>
+	</process>
+</definitions>

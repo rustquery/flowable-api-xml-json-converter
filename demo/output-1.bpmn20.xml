@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" targetNamespace="http://flowable.org/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowable="http://flowable.org/bpmn">
+  <process id="process_1771855350007" name="test template gateway 7" isExecutable="true">
+    <startEvent id="start_1" name="Start process"/>
+    <userTask id="initial_task" name="task usuário" flowable:assignee="alex.query@gmail.com" flowable:candidateGroups="opsteam,redteam" flowable:candidateUsers="aff@gamail.com.">
+      <documentation>tesk basic</documentation>
+    </userTask>
+    <serviceTask id="service_task_1" name="pesquisa api" flowable:type="http">
+      <documentation>pesquisa basica</documentation>
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string>GET</flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:expression>
+            <![CDATA[https://pocketbase.io/api/collections/posts/records/${itemId}]]>
+          </flowable:expression>
+        </flowable:field>
+        <flowable:field name="requestHeaders">
+          <flowable:string>
+            <![CDATA[Accept: application/json
+Content-Type: application/json]]>
+          </flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string>true</flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseParameters">
+          <flowable:string>false</flowable:string>
+        </flowable:field>
+        <flowable:field name="responseVariableName">
+          <flowable:string>resposta</flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sendTask id="id_email_success" name="envio de email" flowable:type="mail" flowable:async="true">
+      <extensionElements>
+        <flowable:field name="to">
+          <flowable:expression>
+            <![CDATA[alexandre.araujo@mv.com.br]]>
+          </flowable:expression>
+        </flowable:field>
+        <flowable:field name="subject">
+          <flowable:expression>
+            <![CDATA[sucesso na pesquisa]]>
+          </flowable:expression>
+        </flowable:field>
+        <flowable:field name="text">
+          <flowable:expression>
+            <![CDATA[Servico realizado com sucesso com texto ${resposta.title}]]>
+          </flowable:expression>
+        </flowable:field>
+      </extensionElements>
+    </sendTask>
+    <sendTask id="id_email_fail" name="envio de email fail" flowable:type="mail" flowable:async="true">
+      <extensionElements>
+        <flowable:field name="to">
+          <flowable:expression>
+            <![CDATA[alexandre.araujo@mv.com.br]]>
+          </flowable:expression>
+        </flowable:field>
+        <flowable:field name="subject">
+          <flowable:expression>
+            <![CDATA[falha de pesquisa]]>
+          </flowable:expression>
+        </flowable:field>
+        <flowable:field name="text">
+          <flowable:expression>
+            <![CDATA[Falha no serviço ${resposta.title}]]>
+          </flowable:expression>
+        </flowable:field>
+      </extensionElements>
+    </sendTask>
+    <exclusiveGateway id="id_gateway_1" name="fluxo_decisao">
+      <documentation/>
+    </exclusiveGateway>
+    <sequenceFlow id="decisao_1" sourceRef="id_gateway_1" targetRef="id_email_success">
+      <conditionExpression xsi:type="tFormalExpression">
+        <![CDATA[${resposta != null && resposta.title == 'Lorem ipsum'}]]>
+      </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="decisao_2" sourceRef="id_gateway_1" targetRef="id_email_fail" name="not equal">
+      <conditionExpression xsi:type="tFormalExpression">
+        <![CDATA[${resposta != null && resposta.title != 'Lorem ipsum'}]]>
+      </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="line_out_start_1_0" sourceRef="start_1" targetRef="initial_task"/>
+    <sequenceFlow id="line_out_initial_task_0" sourceRef="initial_task" targetRef="service_task_1"/>
+    <sequenceFlow id="out_id_email_success_end_success_0" sourceRef="id_email_success" targetRef="end_success"/>
+    <sequenceFlow id="out_line_email_fail_end" sourceRef="id_email_fail" targetRef="initial_task"/>
+    <sequenceFlow id="entrada_fluxo_decisao_1" sourceRef="service_task_1" targetRef="id_gateway_1"/>
+    <endEvent id="end_success" name="End process"/>
+  </process>
+</definitions>
+
