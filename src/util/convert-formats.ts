@@ -69,19 +69,22 @@ const assigneeType = (type: EVertexType) => (item: IXMLElement) => {
 }
 
 const getFlowableFieldValue = (el: IXMLElement, fieldName: string): string | undefined => {
-    const fields = el.extensionElements?.["flowable:field"]
-    if (!fields) {
-        return undefined
-    }
-
+       
+    const fields = el.extensionElements?.["flowable:field"] ?? []
+    const properties = el.extensionElements?.["flowable:properties"]?.["flowable:field"] ?? []
+    
     const fieldsArray = Array.isArray(fields) ? fields : [fields]
-    const targetField = fieldsArray.find(f => f["name"] === fieldName)
+    const propsArray = Array.isArray(properties) ? properties : [properties]
+    const targetField = [
+        ...fieldsArray,
+        ...propsArray,
+    ].find(f => f["name"] === fieldName)
 
     if(!targetField){
         return undefined
     }
 
-    return targetField["flowable:string"] || targetField["flowable:expression"]
+    return targetField["flowable:string"] || targetField["flowable:expression"] || targetField["flowable:property"]
 }
 
 
@@ -268,18 +271,20 @@ const convertBPMNJsonToXML = (template: IFlowableBpmnJson) => {
             ...addIfNotNull("@_flowable:candidateUsers", s.userTaskAssignment?.assignment?.candidateUsers?.length > 0 ? s.userTaskAssignment.assignment.candidateUsers.join(",") : undefined),
             ...(s?.target?.uri || s?.target?.documentDefinitionId ? {
                 extensionElements: {
-                    "flowable:field": [
-                        ...(s.target.uri ? [{
-                            "@_name": "targetUrl",
-                            "flowable:expression": {
-                                "__cdata":s.target.uri || "",
-                            },
-                        }]: []),
-                        ...(s.target.documentDefinitionId ? [{
-                            "@_name": "documentDefinitionId",
-                            "flowable:string": s.target.documentDefinitionId,
-                        }]: []),
-                    ]
+                    "flowable:properties":{
+                        "flowable:field": [
+                            ...(s.target.uri ? [{
+                                "@_name": "targetUrl",
+                                "flowable:expression": {
+                                    "__cdata":s.target.uri || "",
+                                },
+                            }]: []),
+                            ...(s.target.documentDefinitionId ? [{
+                                "@_name": "documentDefinitionId",
+                                "flowable:property": s.target.documentDefinitionId,
+                            }]: []),
+                        ]
+                    }
                 },
             } : {})
         }))

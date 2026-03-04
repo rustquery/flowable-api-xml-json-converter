@@ -62,7 +62,8 @@
                }
             },
             "target": {
-               "documentDefinitionId": "doc_1234"
+               "documentDefinitionId": "doc_1234",
+               "uri": "www.example.com?teste=1234"
             }
          },
          "bounds":{

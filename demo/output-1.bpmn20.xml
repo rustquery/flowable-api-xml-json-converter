@@ -5,9 +5,16 @@
     <userTask id="initial_task" name="task usuário" flowable:assignee="alex.query@gmail.com" flowable:candidateGroups="opsteam,redteam" flowable:candidateUsers="aff@gamail.com.">
       <documentation>tesk basic</documentation>
       <extensionElements>
-        <flowable:field name="documentDefinitionId">
-          <flowable:string>doc_1234</flowable:string>
-        </flowable:field>
+        <flowable:properties>
+          <flowable:field name="targetUrl">
+            <flowable:expression>
+              <![CDATA[www.example.com?teste=1234]]>
+            </flowable:expression>
+          </flowable:field>
+          <flowable:field name="documentDefinitionId">
+            <flowable:property>doc_1234</flowable:property>
+          </flowable:field>
+        </flowable:properties>
       </extensionElements>
     </userTask>
     <serviceTask id="service_task_1" name="pesquisa api" flowable:type="http">
