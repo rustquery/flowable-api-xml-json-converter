@@ -4,6 +4,11 @@
     <startEvent id="start_1" name="Start process"/>
     <userTask id="initial_task" name="task usuário" flowable:assignee="alex.query@gmail.com" flowable:candidateGroups="opsteam,redteam" flowable:candidateUsers="aff@gamail.com.">
       <documentation>tesk basic</documentation>
+      <extensionElements>
+        <flowable:field name="documentDefinitionId">
+          <flowable:string>doc_1234</flowable:string>
+        </flowable:field>
+      </extensionElements>
     </userTask>
     <serviceTask id="service_task_1" name="pesquisa api" flowable:type="http">
       <documentation>pesquisa basica</documentation>

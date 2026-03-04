@@ -60,6 +60,9 @@
                      "aff@gamail.com."
                   ]
                }
+            },
+            "target": {
+               "documentDefinitionId": "doc_1234"
             }
          },
          "bounds":{

@@ -132,6 +132,13 @@ function convertBpmnXmlToFlowableJson(xml: string): IFlowableBpmnJson {
             }
         }
 
+        if(el.nodeType === EVertexType.USER_TASK){
+            props.target = {
+                ...addIfNotNull("documentDefinitionId", getFlowableFieldValue(el, "documentDefinitionId")),
+                ...addIfNotNull("uri", getFlowableFieldValue(el, "targetUrl")),
+            }
+        }
+
         if(el.nodeType === EVertexType.SEND_TASK){
             props.sendTaskConfig = {
                 operation: "mail",
@@ -259,6 +266,22 @@ const convertBPMNJsonToXML = (template: IFlowableBpmnJson) => {
             ...addIfNotNull("@_flowable:assignee", s.userTaskAssignment?.assignment?.assignee),
             ...addIfNotNull("@_flowable:candidateGroups", s.userTaskAssignment?.assignment?.candidateGroups?.length > 0 ? s.userTaskAssignment.assignment.candidateGroups.join(",") : undefined),
             ...addIfNotNull("@_flowable:candidateUsers", s.userTaskAssignment?.assignment?.candidateUsers?.length > 0 ? s.userTaskAssignment.assignment.candidateUsers.join(",") : undefined),
+            ...(s?.target?.uri || s?.target?.documentDefinitionId ? {
+                extensionElements: {
+                    "flowable:field": [
+                        ...(s.target.uri ? [{
+                            "@_name": "targetUrl",
+                            "flowable:expression": {
+                                "__cdata":s.target.uri || "",
+                            },
+                        }]: []),
+                        ...(s.target.documentDefinitionId ? [{
+                            "@_name": "documentDefinitionId",
+                            "flowable:string": s.target.documentDefinitionId,
+                        }]: []),
+                    ]
+                },
+            } : {})
         }))
 
     const serviceTasks = childShapes
