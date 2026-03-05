@@ -1,6 +1,6 @@
 import { XMLBuilder, XMLParser } from "fast-xml-parser"
 import { addIfNotNull } from "./add-if-not-null"
-import { EVertexType, IChildShape, IFlowableBpmnJson, INodeProperties, IResourceReference, ISequenceFlowNodeProperties, TNavigationMode } from "@supdigest/digest-convert-types"
+import { ENavigationMode, EVertexType, IChildShape, IFlowableBpmnJson, INodeProperties, IResourceReference, ISequenceFlowNodeProperties } from "@supdigest/digest-convert-types"
 
 interface IFlowableField {
     "name": string,
@@ -139,7 +139,7 @@ function convertBpmnXmlToFlowableJson(xml: string): IFlowableBpmnJson {
             props.target = {
                 ...addIfNotNull("documentDefinitionId", getFlowableFieldValue(el, "documentDefinitionId")),
                 ...addIfNotNull("uri", getFlowableFieldValue(el, "targetUrl")),
-                navigationMode: (getFlowableFieldValue(el, "navigationMode") || "self") as TNavigationMode,
+                navigationMode: (getFlowableFieldValue(el, "navigationMode") || ENavigationMode.EXTERNAL) as ENavigationMode,
             }
         }
 
@@ -286,7 +286,7 @@ const convertBPMNJsonToXML = (template: IFlowableBpmnJson) => {
                             }]: []),
                             {
                                 "@_name": "navigationMode",
-                                "flowable:property": s.target.navigationMode ?? "self",
+                                "flowable:property": s.target.navigationMode ?? ENavigationMode.EXTERNAL,
                             }
                         ]
                     }
