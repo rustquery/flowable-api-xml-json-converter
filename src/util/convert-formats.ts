@@ -118,6 +118,7 @@ function convertBpmnXmlToFlowableJson(xml: string): IFlowableBpmnJson {
             processId: el.id,
             nodeType: el.nodeType,
             prototypeId: el.id,
+            stepOrder: Number(getFlowableFieldValue(el, "stepOrder") || "-1"),
             ...addIfNotNull("documentation", el.documentation),
         }
 
