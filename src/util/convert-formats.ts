@@ -266,10 +266,12 @@ const convertBPMNJsonToXML = (template: IFlowableBpmnJson) => {
         .map((s:INodeProperties) => ({
             '@_id': s.prototypeId,
             '@_name': s.name,
+            "@_flowable:formKey": s?.target?.uri || s?.target?.documentDefinitionId || "",
             ...addIfNotNull("documentation", s.documentation),
             ...addIfNotNull("@_flowable:assignee", s.userTaskAssignment?.assignment?.assignee),
             ...addIfNotNull("@_flowable:candidateGroups", s.userTaskAssignment?.assignment?.candidateGroups?.length > 0 ? s.userTaskAssignment.assignment.candidateGroups.join(",") : undefined),
             ...addIfNotNull("@_flowable:candidateUsers", s.userTaskAssignment?.assignment?.candidateUsers?.length > 0 ? s.userTaskAssignment.assignment.candidateUsers.join(",") : undefined),
+            
             ...(s?.target?.uri || s?.target?.documentDefinitionId ? {
                 extensionElements: {
                     "flowable:properties":{
