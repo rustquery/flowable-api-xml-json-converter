@@ -272,29 +272,30 @@ const convertBPMNJsonToXML = (template: IFlowableBpmnJson) => {
             ...addIfNotNull("@_flowable:assignee", s.userTaskAssignment?.assignment?.assignee),
             ...addIfNotNull("@_flowable:candidateGroups", s.userTaskAssignment?.assignment?.candidateGroups?.length > 0 ? s.userTaskAssignment.assignment.candidateGroups.join(",") : undefined),
             ...addIfNotNull("@_flowable:candidateUsers", s.userTaskAssignment?.assignment?.candidateUsers?.length > 0 ? s.userTaskAssignment.assignment.candidateUsers.join(",") : undefined),
-            
-            ...(s?.target?.uri || s?.target?.documentDefinitionId ? {
-                extensionElements: {
-                    "flowable:properties":{
-                        "flowable:field": [
-                            ...(s.target.uri ? [{
-                                "@_name": "targetUrl",
-                                "flowable:expression": {
-                                    "__cdata":s.target.uri || "",
-                                },
-                            }]: []),
-                            ...(s.target.documentDefinitionId ? [{
-                                "@_name": "documentDefinitionId",
-                                "flowable:property": s.target.documentDefinitionId,
-                            }]: []),
-                            {
-                                "@_name": "navigationMode",
-                                "flowable:property": s.target.navigationMode ?? ENavigationMode.EXTERNAL,
-                            }
-                        ]
-                    }
+            extensionElements: {
+                "flowable:properties":{
+                    "flowable:field": [
+                        ...(s.target.uri ? [{
+                            "@_name": "targetUrl",
+                            "flowable:expression": {
+                                "__cdata":s.target.uri || "",
+                            },
+                        }]: []),
+                        ...(s.target.documentDefinitionId ? [{
+                            "@_name": "documentDefinitionId",
+                            "flowable:property": s.target.documentDefinitionId,
+                        }]: []),
+                        {
+                            "@_name": "navigationMode",
+                            "flowable:property": s.target.navigationMode ?? ENavigationMode.EXTERNAL,
+                        },
+                        {
+                            "@_name": "stepOrder",
+                            "flowable:string": s.stepOrder || -1,
+                        },
+                    ]
                 },
-            } : {})
+            },
         }))
 
     const serviceTasks = childShapes
