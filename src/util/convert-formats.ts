@@ -308,10 +308,6 @@ const convertBPMNJsonToXML = (template: IFlowableBpmnJson) => {
             extensionElements: {
                 "flowable:field": [
                     {
-                        "@_name": "stepOrder",
-                        "flowable:string": s.stepOrder || -1,
-                    },
-                    {
                         "@_name": "requestMethod",
                         "flowable:string": s.serviceTaskConfig?.method,
                     },
