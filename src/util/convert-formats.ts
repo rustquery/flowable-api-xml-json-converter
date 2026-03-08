@@ -120,6 +120,7 @@ function convertBpmnXmlToFlowableJson(xml: string): IFlowableBpmnJson {
             prototypeId: el.id,
             stepOrder: Number(getFlowableFieldValue(el, "stepOrder") || "-1"),
             ...addIfNotNull("documentation", el.documentation),
+            ...addIfNotNull("dueDate",el["flowable:dueDate"]),
         }
 
         const candidateGroups = el["flowable:candidateGroups"] || ""
@@ -269,6 +270,7 @@ const convertBPMNJsonToXML = (template: IFlowableBpmnJson) => {
             '@_name': s.name,
             "@_flowable:formKey": s?.target?.uri || s?.target?.documentDefinitionId || "",
             ...addIfNotNull("documentation", s.documentation),
+            ...addIfNotNull("@_flowable:dueDate", s.dueDate),
             ...addIfNotNull("@_flowable:assignee", s.userTaskAssignment?.assignment?.assignee),
             ...addIfNotNull("@_flowable:candidateGroups", s.userTaskAssignment?.assignment?.candidateGroups?.length > 0 ? s.userTaskAssignment.assignment.candidateGroups.join(",") : undefined),
             ...addIfNotNull("@_flowable:candidateUsers", s.userTaskAssignment?.assignment?.candidateUsers?.length > 0 ? s.userTaskAssignment.assignment.candidateUsers.join(",") : undefined),
