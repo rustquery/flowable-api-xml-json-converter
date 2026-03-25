@@ -18,7 +18,8 @@
         "name": "Start process",
         "processId": "start_1",
         "nodeType": "StartNoneEvent",
-        "prototypeId": "start_1"
+        "prototypeId": "start_1",
+        "stepOrder": -1
       },
       "bounds": {
         "lowerRight": {
@@ -47,6 +48,7 @@
         "processId": "initial_task",
         "nodeType": "UserTask",
         "prototypeId": "initial_task",
+        "stepOrder": -1,
         "documentation": "tesk basic",
         "userTaskAssignment": {
           "assignment": {
@@ -63,7 +65,8 @@
         },
         "target": {
           "documentDefinitionId": "doc_1234",
-          "uri": "www.example.com?teste=1234"
+          "uri": "www.example.com?teste=1234",
+          "navigationMode": "external"
         }
       },
       "bounds": {
@@ -93,6 +96,7 @@
         "processId": "id_email_success",
         "nodeType": "SendTask",
         "prototypeId": "id_email_success",
+        "stepOrder": -1,
         "sendTaskConfig": {
           "operation": "mail",
           "target": "alexandre.araujo@mv.com.br",
@@ -127,6 +131,7 @@
         "processId": "id_email_fail",
         "nodeType": "SendTask",
         "prototypeId": "id_email_fail",
+        "stepOrder": -1,
         "sendTaskConfig": {
           "operation": "mail",
           "target": "alexandre.araujo@mv.com.br",
@@ -161,13 +166,23 @@
         "processId": "service_task_1",
         "nodeType": "ServiceTask",
         "prototypeId": "service_task_1",
+        "stepOrder": -1,
         "documentation": "pesquisa basica",
         "serviceTaskConfig": {
           "operation": "html",
           "saveResponseVariableAsJson": true,
           "uri": "https://pocketbase.io/api/collections/posts/records/${itemId}",
           "method": "GET",
-          "responseVariableName": "resposta"
+          "responseVariableName": "resposta",
+          "requestHeaders": {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          "requestBody": {
+            "itemId": "1234",
+            "term": "lorem ipsum",
+            "user": "${currentUser}"
+          }
         }
       },
       "bounds": {
@@ -197,6 +212,7 @@
         "processId": "id_gateway_1",
         "nodeType": "ExclusiveGateway",
         "prototypeId": "id_gateway_1",
+        "stepOrder": -1,
         "documentation": ""
       },
       "bounds": {
@@ -228,7 +244,8 @@
         "name": "End process",
         "processId": "end_success",
         "nodeType": "EndNoneEvent",
-        "prototypeId": "end_success"
+        "prototypeId": "end_success",
+        "stepOrder": -1
       },
       "bounds": {
         "lowerRight": {

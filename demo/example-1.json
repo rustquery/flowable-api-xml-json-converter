@@ -99,7 +99,16 @@
                "uri":"https://pocketbase.io/api/collections/posts/records/${itemId}",
                "method":"GET",
                "responseVariableName": "resposta",
-               "saveResponseVariableAsJson":true
+               "saveResponseVariableAsJson":true,
+               "requestHeaders": {
+                 "Accept": "application/json",
+                 "Content-Type": "application/json"
+               },
+               "requestBody": {
+                  "itemId": "1234",
+                  "term": "lorem ipsum",
+                  "user": "${currentUser}"
+               }
             }
          },
          "bounds":{

@@ -2,7 +2,7 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" targetNamespace="http://flowable.org/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowable="http://flowable.org/bpmn">
   <process id="process_1771855350007" name="test template gateway 7" isExecutable="true">
     <startEvent id="start_1" name="Start process"/>
-    <userTask id="initial_task" name="task usuário" flowable:assignee="alex.query@gmail.com" flowable:candidateGroups="opsteam,redteam" flowable:candidateUsers="aff@gamail.com.">
+    <userTask id="initial_task" name="task usuário" flowable:formKey="www.example.com?teste=1234" flowable:assignee="alex.query@gmail.com" flowable:candidateGroups="opsteam,redteam" flowable:candidateUsers="aff@gamail.com.">
       <documentation>tesk basic</documentation>
       <extensionElements>
         <flowable:properties>
@@ -13,6 +13,12 @@
           </flowable:field>
           <flowable:field name="documentDefinitionId">
             <flowable:property>doc_1234</flowable:property>
+          </flowable:field>
+          <flowable:field name="navigationMode">
+            <flowable:property>external</flowable:property>
+          </flowable:field>
+          <flowable:field name="stepOrder">
+            <flowable:string>-1</flowable:string>
           </flowable:field>
         </flowable:properties>
       </extensionElements>
@@ -29,10 +35,17 @@
           </flowable:expression>
         </flowable:field>
         <flowable:field name="requestHeaders">
-          <flowable:string>
+          <flowable:expression>
             <![CDATA[Accept: application/json
 Content-Type: application/json]]>
-          </flowable:string>
+          </flowable:expression>
+        </flowable:field>
+        <flowable:field name="requestBody">
+          <flowable:expression><![CDATA[{
+  "itemId": "1234",
+  "term": "lorem ipsum",
+  "user": "${currentUser}"
+}]]></flowable:expression>
         </flowable:field>
         <flowable:field name="saveResponseVariableAsJson">
           <flowable:string>true</flowable:string>
