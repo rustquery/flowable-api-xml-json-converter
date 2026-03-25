@@ -155,6 +155,17 @@ function convertBpmnXmlToFlowableJson(xml: string): IFlowableBpmnJson {
         }
 
         if(el.nodeType === EVertexType.SERVICE_TASK){
+            const requestHeaders = (getFlowableFieldValue(el, "requestHeaders") || "").split("\n").reduce((acc, line) => {
+                const [key, ...rest] = line.split(":")
+                if (key && rest.length > 0) {
+                    acc[key.trim()] = rest.join(":").trim()
+                }
+                return acc
+            }, {} as Record<string, string>)
+
+            const requestBody = JSON.parse(getFlowableFieldValue(el, "requestBody") || "{}")
+
+
             props.serviceTaskConfig = {
                  operation: "html",
                  saveResponseVariableAsJson: !!getFlowableFieldValue(el, "saveResponseVariableAsJson"),
@@ -162,7 +173,21 @@ function convertBpmnXmlToFlowableJson(xml: string): IFlowableBpmnJson {
                 // ...addIfNotNull("serviceProtocol", getFlowableFieldValue(el, "serviceProtocol")),
                 ...addIfNotNull("method", getFlowableFieldValue(el, "requestMethod")),
                 ...addIfNotNull("responseVariableName", getFlowableFieldValue(el, "responseVariableName")),
+                requestHeaders,
+                requestBody,
             }
+
+                    // {
+                    //     "@_name": "requestHeaders",
+                    //     "flowable:expression": {
+                    //         "__cdata": s.serviceTaskConfig?.requestHeaders ? Object.entries(s.serviceTaskConfig.requestHeaders).map(([key, value]) => `${key}: ${value}`).join('\n') : undefined,
+                    //     },
+                    // },
+                    // {
+                    //     "@_name": "requestBody",
+                    //     "flowable:expression": `<![CDATA[${JSON.stringify(s.serviceTaskConfig?.requestBody ?? {}, null, 2)}]]>`,
+                    // },
+
         }
 
         if(el.nodeType === EVertexType.SCRIPT_TASK){
@@ -321,9 +346,13 @@ const convertBPMNJsonToXML = (template: IFlowableBpmnJson) => {
                     },
                     {
                         "@_name": "requestHeaders",
-                        "flowable:string": {
-                            "__cdata": "Accept: application/json\nContent-Type: application/json",
+                        "flowable:expression": {
+                            "__cdata": s.serviceTaskConfig?.requestHeaders ? Object.entries(s.serviceTaskConfig.requestHeaders).map(([key, value]) => `${key}: ${value}`).join('\n') : undefined,
                         },
+                    },
+                    {
+                        "@_name": "requestBody",
+                        "flowable:expression": `<![CDATA[${JSON.stringify(s.serviceTaskConfig?.requestBody ?? {}, null, 2)}]]>`,
                     },
                     {
                         "@_name": "saveResponseVariableAsJson",
@@ -449,6 +478,7 @@ const convertBPMNJsonToXML = (template: IFlowableBpmnJson) => {
         cdataPropName: "__cdata",
         suppressEmptyNode: true,
         suppressBooleanAttributes: false,
+        processEntities: false,
     })
 
     return `<?xml version="1.0" encoding="UTF-8"?>\n${builder.build(bpmnObject)}`

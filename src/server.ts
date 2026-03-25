@@ -29,4 +29,14 @@ fastify.post('/json-to-xml', async (request, reply) => {
   }
 });
 
+// --- ENDPOINT: version ---
+fastify.get('/version', async (_request, reply) => {
+  try {    
+    const packageVersion = require('../package.json').version;
+    return { version: packageVersion };
+  } catch (err) {
+    reply.status(400).send({ error: err.message });
+  }
+});
+
 fastify.listen({ port: 3111, host: '0.0.0.0' });
